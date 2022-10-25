@@ -51,4 +51,11 @@ window.addEventListener('DOMContentLoaded', event => {
         });
     });
 
+    const btn = document.body.querySelector('#submitButton');
+    const form = document.body.querySelector('#contactForm');
+    btn.addEventListener('click', function handleClick() {
+      btn.textContent = 'Sent. Thank you!';
+      form.reset();
+    });
+
 });

@@ -13,6 +13,8 @@ func main() {
 	mux := http.NewServeMux()
 	mux.Handle("/public/", logging(public()))
 	mux.Handle("/", logging(index()))
+	mux.Handle("/contact", logging(contact()))
+	mux.Handle("/privacy-policy", logging(privacy()))
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 
 	port, ok := os.LookupEnv("PORT")
@@ -46,10 +48,6 @@ func logging(next http.Handler) http.Handler {
 	})
 }
 
-// templates references the specified templates and caches the parsed results
-// to help speed up response times.
-var templates = template.Must(template.ParseFiles("./templates/base.html"))
-
 //var templates = template.Must(template.ParseFiles("./templates/base.html", "./templates/body.html"))
 
 // index is the handler responsible for rending the index page for the site.
@@ -59,12 +57,55 @@ func index() http.Handler {
 			Title        template.HTML
 			BusinessName string
 			Slogan       string
+			Success      bool
 		}{
-			Title:        template.HTML("Business &verbar; Landing"),
+			Title:        template.HTML("Kublet"),
 			BusinessName: "Business,",
 			Slogan:       "we get things done.",
 		}
+
+		var templates = template.Must(template.ParseFiles("./templates/base.html", "./templates/home.html", "./templates/forms.html"))
 		err := templates.ExecuteTemplate(w, "base", &b)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("index: couldn't parse template: %v", err), http.StatusInternalServerError)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+	})
+}
+
+type ContactDetails struct {
+	Name    string
+	Email   string
+	Subject string
+	Message string
+}
+
+// contact is the handler responsible for rending the index page for the site.
+func contact() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			return
+		}
+
+		details := ContactDetails{
+			Name:    r.FormValue("name"),
+			Email:   r.FormValue("email"),
+			Subject: r.FormValue("subject"),
+			Message: r.FormValue("message"),
+		}
+
+		fmt.Println("Email Sent Successfully!")
+
+		return
+	})
+}
+
+// privacy is the handler responsible for rending the index page for the site.
+func privacy() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		var templates = template.Must(template.ParseFiles("./templates/base.html", "./templates/privacy.html"))
+		err := templates.ExecuteTemplate(w, "privacy", nil)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("index: couldn't parse template: %v", err), http.StatusInternalServerError)
 			return
