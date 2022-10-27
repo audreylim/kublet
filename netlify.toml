@@ -4,5 +4,5 @@
   publish = "public"
 
 [build.environment]
-  GO_IMPORT_PATH = "github.com/kublet/website"
+  GO_IMPORT_PATH = "github.com/audreylim/kublet"
   GO111MODULE = "on"

@@ -48,7 +48,7 @@ func logging(next http.Handler) http.Handler {
 	})
 }
 
-//var templates = template.Must(template.ParseFiles("./templates/base.html", "./templates/body.html"))
+//var public = template.Must(template.ParseFiles("./public/index.html", "./public/body.html"))
 
 // index is the handler responsible for rending the index page for the site.
 func index() http.Handler {
@@ -64,8 +64,8 @@ func index() http.Handler {
 			Slogan:       "we get things done.",
 		}
 
-		var templates = template.Must(template.ParseFiles("./templates/base.html", "./templates/home.html", "./templates/forms.html"))
-		err := templates.ExecuteTemplate(w, "base", &b)
+		var public = template.Must(template.ParseFiles("./public/index.html", "./public/home.html", "./public/forms.html"))
+		err := public.ExecuteTemplate(w, "index", &b)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("index: couldn't parse template: %v", err), http.StatusInternalServerError)
 			return
@@ -88,12 +88,12 @@ func contact() http.Handler {
 			return
 		}
 
-		details := ContactDetails{
-			Name:    r.FormValue("name"),
-			Email:   r.FormValue("email"),
-			Subject: r.FormValue("subject"),
-			Message: r.FormValue("message"),
-		}
+		//details := ContactDetails{
+		//	Name:    r.FormValue("name"),
+		//	Email:   r.FormValue("email"),
+		//	Subject: r.FormValue("subject"),
+		//	Message: r.FormValue("message"),
+		//}
 
 		fmt.Println("Email Sent Successfully!")
 
@@ -104,8 +104,8 @@ func contact() http.Handler {
 // privacy is the handler responsible for rending the index page for the site.
 func privacy() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var templates = template.Must(template.ParseFiles("./templates/base.html", "./templates/privacy.html"))
-		err := templates.ExecuteTemplate(w, "privacy", nil)
+		var public = template.Must(template.ParseFiles("./public/index.html", "./public/privacy.html"))
+		err := public.ExecuteTemplate(w, "privacy", nil)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("index: couldn't parse template: %v", err), http.StatusInternalServerError)
 			return
