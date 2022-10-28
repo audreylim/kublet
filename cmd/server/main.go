@@ -53,7 +53,7 @@ func logging(next http.Handler) http.Handler {
 // index is the handler responsible for rending the index page for the site.
 func index() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		tmpl := template.Must(template.ParseFiles("./public/index.html", "./public/home.html", "./public/forms.html"))
+		tmpl := template.Must(template.ParseFiles("./public/html/index.html", "./public/html/home.html", "./public/html/forms.html"))
 		err := tmpl.ExecuteTemplate(w, "index", nil)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("index: couldn't parse template: %v", err), http.StatusInternalServerError)
@@ -93,7 +93,7 @@ func contact() http.Handler {
 // privacy is the handler responsible for rending the index page for the site.
 func privacy() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var public = template.Must(template.ParseFiles("./public/index.html", "./public/privacy.html"))
+		var public = template.Must(template.ParseFiles("./public/html/index.html", "./public/html/privacy.html"))
 		err := public.ExecuteTemplate(w, "privacy", nil)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("index: couldn't parse template: %v", err), http.StatusInternalServerError)
