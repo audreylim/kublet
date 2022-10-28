@@ -657,6 +657,10 @@ progress {
   margin-bottom: 20px;
 }
 
+.privacy-container {
+  margin-top: 60px;
+}
+
 .container-dropdown {
   background: #000;
   color: #fff;
