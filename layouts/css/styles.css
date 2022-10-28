@@ -687,6 +687,14 @@ progress {
 }
 
 .bg-image1 {
+  background-image: url("../assets/img/mac.jpg");
+  background-size: cover;
+  background-position: center;
+  height: 304px;
+  position: relative;
+}
+
+.bg-image2 {
   background-image: url("../assets/img/product_green.jpg");
   background-size: cover;
   background-position: center;
