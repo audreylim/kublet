@@ -11,11 +11,11 @@ import (
 
 func main() {
 	mux := http.NewServeMux()
-	mux.Handle("/public/", logging(public()))
+	mux.Handle("/layouts/", logging(public()))
 	mux.Handle("/", logging(index()))
 	mux.Handle("/contact", logging(contact()))
 	mux.Handle("/privacy-policy", logging(privacy()))
-	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
+	http.Handle("/layouts/", http.StripPrefix("/layouts/", http.FileServer(http.Dir("./layouts"))))
 
 	port, ok := os.LookupEnv("PORT")
 	if !ok {
@@ -53,8 +53,8 @@ func logging(next http.Handler) http.Handler {
 // index is the handler responsible for rending the index page for the site.
 func index() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		tmpl := template.Must(template.ParseFiles("./layouts/index.html", "./layouts/home.html", "./layouts/forms.html"))
-		err := tmpl.ExecuteTemplate(w, "index", nil)
+		tmpl := template.Must(template.ParseFiles("./layouts/index.html"))
+		err := tmpl.ExecuteTemplate(w, "index.html", nil)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("index: couldn't parse template: %v", err), http.StatusInternalServerError)
 			return
@@ -94,7 +94,7 @@ func contact() http.Handler {
 func privacy() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var public = template.Must(template.ParseFiles("./layouts/index.html", "./layouts/privacy.html"))
-		err := public.ExecuteTemplate(w, "privacy", nil)
+		err := public.ExecuteTemplate(w, "privacy.html", nil)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("index: couldn't parse template: %v", err), http.StatusInternalServerError)
 			return
@@ -105,5 +105,5 @@ func privacy() http.Handler {
 
 // public serves static assets such as CSS and JavaScript to clients.
 func public() http.Handler {
-	return http.StripPrefix("/public/", http.FileServer(http.Dir("./public")))
+	return http.StripPrefix("/layouts/", http.FileServer(http.Dir("./layouts")))
 }
