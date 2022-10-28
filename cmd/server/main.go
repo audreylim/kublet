@@ -15,7 +15,7 @@ func main() {
 	mux.Handle("/", logging(index()))
 	mux.Handle("/contact", logging(contact()))
 	mux.Handle("/privacy-policy", logging(privacy()))
-	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
+	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
 
 	port, ok := os.LookupEnv("PORT")
 	if !ok {
@@ -53,19 +53,8 @@ func logging(next http.Handler) http.Handler {
 // index is the handler responsible for rending the index page for the site.
 func index() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		b := struct {
-			Title        template.HTML
-			BusinessName string
-			Slogan       string
-			Success      bool
-		}{
-			Title:        template.HTML("Kublet"),
-			BusinessName: "Business,",
-			Slogan:       "we get things done.",
-		}
-
-		var public = template.Must(template.ParseFiles("./public/index.html", "./public/home.html", "./public/forms.html"))
-		err := public.ExecuteTemplate(w, "index", &b)
+		tmpl := template.Must(template.ParseFiles("./public/index.html", "./public/home.html", "./public/forms.html"))
+		err := tmpl.ExecuteTemplate(w, "index", nil)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("index: couldn't parse template: %v", err), http.StatusInternalServerError)
 			return
