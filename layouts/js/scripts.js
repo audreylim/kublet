@@ -53,9 +53,30 @@ window.addEventListener('DOMContentLoaded', event => {
 
     const btn = document.body.querySelector('#submitButton');
     const form = document.body.querySelector('#contactForm');
-    btn.addEventListener('click', function handleClick() {
-      btn.textContent = 'Sent. Thank you!';
-      form.reset();
-    });
+    const message = document.body.querySelector('#submitMessage');
 
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      const myForm = event.target;
+      const formData = new FormData(myForm);
+      
+      fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(formData).toString(),
+      })
+        .then(() => {
+          form.reset();
+          btn.textContent = 'Sent. Thank you!';
+        })
+        .catch((error) => {
+          form.reset();
+          console.log(error);
+          btn.textContent = 'Error. Please try again';
+        })   
+    };
+    form.addEventListener("submit", handleSubmit);
+
+
+    
 });

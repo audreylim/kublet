@@ -653,6 +653,11 @@ progress {
   margin-bottom: 45px;
 }
 
+.submit-message {
+  margin-top: 30px;
+  background-color: red;
+}
+
 .presetui-caption {
   margin-bottom: 20px;
 }
