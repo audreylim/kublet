@@ -658,6 +658,41 @@ progress {
   background-color: red;
 }
 
+.signup-name {
+  width: 100%; 
+  border-radius: 5px;
+  border: 1px solid #dee2e6;
+  padding: 5px;
+}
+
+.signup-email {
+  width: 100%; 
+  border-radius: 5px;
+  border: 1px solid #dee2e6;
+  padding: 5px;
+}
+
+.signup-btn {
+  width: 100%; 
+  border-radius: 5px;
+  border: 1px solid #0d6efd;
+  padding: 5px;
+  background-color: #0d6efd;
+  color: #fff;
+}
+
+.signup {
+  margin-top: 15px;
+}
+
+h5.signup-caption {
+  color: #fff !important;
+}
+
+.container-signup {
+  margin-top: 80px;
+}
+
 .presetui-caption {
   margin-bottom: 20px;
 }
